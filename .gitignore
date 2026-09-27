@@ -1,0 +1,72 @@
+# Go
+/bin/
+/dist/
+*.exe
+*.test
+*.out
+.go/
+vendor/
+
+# Nix
+.direnv/
+result
+result-*
+
+# Postgres / local dev
+.pgdata/
+.pgsocket/
+migrate_working_dir/
+
+# Flutter / Dart (mobile/)
+mobile/**/doc/api/
+mobile/ios/Flutter/.last_build_id
+mobile/.dart_tool/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+mobile/.pub-cache/
+mobile/.pub/
+mobile/build/
+mobile/app.*.symbols
+mobile/app.*.map.json
+mobile/android/app/debug
+mobile/android/app/profile
+mobile/android/app/release
+mobile/.build/
+mobile/.buildlog/
+mobile/.history
+mobile/.swiftpm/
+
+# Node / SvelteKit (web/)
+web/node_modules
+web/.output
+web/.vercel
+web/.netlify
+web/.wrangler
+web/.svelte-kit
+web/bun.lock
+web/build
+web/vite.config.js.timestamp-*
+web/vite.config.ts.timestamp-*
+
+# Env
+.env
+.env.*
+!.env.example
+!.env.test
+
+# IDE
+*.iml
+*.ipr
+*.iws
+.idea/
+.atom/
+.vscode/
+
+# OS / misc
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+Thumbs.db
+.svn/
