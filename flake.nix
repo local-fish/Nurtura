@@ -42,7 +42,7 @@
 
           typescript-language-server
         ];
-        shellHook = "tmux -L ${name} new-session -A -s ${name}";
+        shellHook = "./nix-hook.fish ${name}";
       };
     };
 }
