@@ -70,3 +70,6 @@ web/vite.config.ts.timestamp-*
 .DS_Store
 Thumbs.db
 .svn/
+
+# Vercel
+.vercel
