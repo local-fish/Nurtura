@@ -14,7 +14,7 @@ result-*
 
 # Postgres / local dev
 .pgdata/
-.pgsocket/
+.pgsock/
 migrate_working_dir/
 
 # Flutter / Dart (mobile/)
