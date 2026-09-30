@@ -69,6 +69,34 @@ CREATE TABLE growth_reference (
   PRIMARY KEY (sex, age_months, metric)
 );
 
+CREATE TABLE patient_activity (
+  patient_id uuid PRIMARY KEY REFERENCES patients(id) ON DELETE CASCADE,
+  last_activity_at timestamptz NOT NULL DEFAULT now()
+);
+ALTER TABLE patient_activity ENABLE ROW LEVEL SECURITY;
+
+CREATE FUNCTION touch_patient_child() RETURNS trigger LANGUAGE plpgsql AS $$
+DECLARE pid uuid;
+BEGIN
+  pid := CASE WHEN TG_OP = 'DELETE' THEN OLD.patient_id ELSE NEW.patient_id END;
+  INSERT INTO patient_activity (patient_id, last_activity_at)
+  SELECT pid, now() WHERE EXISTS (SELECT 1 FROM patients WHERE id = pid)
+  ON CONFLICT (patient_id) DO UPDATE SET last_activity_at = EXCLUDED.last_activity_at;
+  RETURN NULL;
+END $$;
+
+CREATE FUNCTION touch_patient_self() RETURNS trigger LANGUAGE plpgsql AS $$
+BEGIN
+  INSERT INTO patient_activity (patient_id, last_activity_at) VALUES (NEW.id, now())
+  ON CONFLICT (patient_id) DO UPDATE SET last_activity_at = EXCLUDED.last_activity_at;
+  RETURN NULL;
+END $$;
+
+CREATE TRIGGER records_activity  AFTER INSERT OR UPDATE OR DELETE ON records FOR EACH ROW EXECUTE FUNCTION touch_patient_child();
+CREATE TRIGGER logs_activity     AFTER INSERT OR UPDATE OR DELETE ON logs FOR EACH ROW EXECUTE FUNCTION touch_patient_child();
+CREATE TRIGGER vaccines_activity AFTER INSERT OR UPDATE OR DELETE ON patient_vaccines FOR EACH ROW EXECUTE FUNCTION touch_patient_child();
+CREATE TRIGGER patients_activity AFTER INSERT OR UPDATE ON patients FOR EACH ROW EXECUTE FUNCTION touch_patient_self();
+
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE patients ENABLE ROW LEVEL SECURITY;
 ALTER TABLE metrics ENABLE ROW LEVEL SECURITY;
