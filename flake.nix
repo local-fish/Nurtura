@@ -41,6 +41,7 @@
           jdk17
 
           typescript-language-server
+          svelte-language-server
         ];
         shellHook = "./nix-hook.fish ${name}";
       };
