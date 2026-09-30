@@ -5,7 +5,6 @@
     title = '',
     subtitle = '',
     user = { name: 'placeholder', age: 'placeholder', avatar: '' },
-    search = $bindable(''),
     onmenu = () => {},
   } = $props();
 </script>
@@ -97,7 +96,6 @@
   @media (max-width: 900px) {
     .topbar { padding: 0 16px; }
     .menu { display: grid; }
-    .search { display: none; }
     .who { display: none; }
   }
 </style>
