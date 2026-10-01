@@ -1,5 +1,12 @@
 <script lang="ts">
-import Main from './routes/main/Page.svelte';
+  import Auth from './routes/login/Page.svelte';
+  import Main from './routes/main/Page.svelte'
+  import { getToken } from './routes/login/auth';
+  let token = $state(getToken());
 </script>
 
-<Main/>
+{#if token}
+  <Main />
+{:else}
+  <Auth onLogin={(t: string) => (token = t)} />
+{/if}

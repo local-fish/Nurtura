@@ -1,12 +1,16 @@
 <script lang="ts">
-let { bg = "#123456", children } = $props();
+  import type { Snippet } from 'svelte';
+
+  let {
+    bg = '#123456',
+    border,
+    children
+  }: { bg?: string; border?: string; children?: Snippet } = $props();
 </script>
 
-<div class="card" style:--bg={bg}>
+<div class="card" style:--bg={bg} style:border={border}>
   {@render children?.()}
-</div>
-
-<style>
+</div><style>
 .card {
   border-radius: 2rem;
   background-color: var(--bg);

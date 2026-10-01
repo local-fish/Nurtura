@@ -1,14 +1,15 @@
 <script>
-  let {
-    name = 'Aura',
-    updatedAt = '17 September 2026',
-    href = '#',
-    metrics = [
-      { label: 'Berat badan', value: '8.5', unit: 'kg', status: 'Normal · WHO' },
-      { label: 'Tinggi badan', value: '71.0', unit: 'cm', status: 'Normal · WHO' },
-      { label: 'Lingkar kepala', value: '44.5', unit: 'cm', status: 'Normal · WHO' }
-    ]
-  } = $props();
+import Button from "../../../components/Button.svelte";
+
+let {
+  name = 'Aura',
+  updatedAt = '17 September 2026',
+  metrics = [
+    { label: 'Berat badan', value: '8.5', unit: 'kg', status: 'Normal · WHO' },
+    { label: 'Tinggi badan', value: '71.0', unit: 'cm', status: 'Normal · WHO' },
+    { label: 'Lingkar kepala', value: '44.5', unit: 'cm', status: 'Normal · WHO' }
+  ]
+} = $props();
 </script>
 
 <section class="card">
@@ -19,13 +20,9 @@
       <h2>Pertumbuhan {name}</h2>
       <p class="updated">Pembaruan terakhir · {updatedAt}</p>
     </div>
-    <a class="cta" {href}>
-      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
-           stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M7 17 17 7M8 7h9v9" />
-      </svg>
-      Lihat grafik lengkap
-    </a>
+    <Button style="width: 18rem" icon="arrow-up-right">
+      <span style="font-size: 0.9rem">Lihat Grafik Lengkap</span>
+    </Button>
   </header>
   <div class="metrics">
     {#each metrics as m}
@@ -95,6 +92,7 @@
 
   .cta {
     display: inline-flex;
+    justify-content: center;
     align-items: center;
     gap: 8px;
     padding: 12px 22px;
