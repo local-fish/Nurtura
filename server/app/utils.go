@@ -9,6 +9,7 @@ import (
 	"regexp"
 	"strings"
 	"time"
+	"strconv"
 )
 
 var uuidRe = regexp.MustCompile(`^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$`)
@@ -58,3 +59,22 @@ func ageMonths(dob, at time.Time) int {
 	return m
 }
 
+func pagination(r *http.Request) (int, int, string) {
+	limit, offset := 50, 0
+	q := r.URL.Query()
+	if v := q.Get("limit"); v != "" {
+		n, err := strconv.Atoi(v)
+		if err != nil || n < 1 || n > 200 {
+			return 0, 0, "limit must be 1-200"
+		}
+		limit = n
+	}
+	if v := q.Get("offset"); v != "" {
+		n, err := strconv.Atoi(v)
+		if err != nil || n < 0 {
+			return 0, 0, "offset must be 0 or more"
+		}
+		offset = n
+	}
+	return limit, offset, ""
+}

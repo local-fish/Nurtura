@@ -48,11 +48,18 @@ func (a *App) listLogs(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		return
 	}
+	limit, offset, msg := pagination(r)
+	if msg != "" {
+		writeErr(w, http.StatusBadRequest, msg)
+		return
+	}
 	rows, err := a.db.Query(r.Context(), `
 		SELECT l.id, l.patient_id, l.note, l.created_at
 		FROM logs l JOIN patients p ON p.id = l.patient_id
 		WHERE l.patient_id = $1 AND p.user_id = $2
-		ORDER BY l.created_at DESC`, p.Id, userId(r))
+		ORDER BY l.created_at DESC, l.id
+		LIMIT $3 OFFSET $4
+		`, p.Id, userId(r), limit, offset)
 	if err != nil {
 		serverErr(w, r, err)
 		return
