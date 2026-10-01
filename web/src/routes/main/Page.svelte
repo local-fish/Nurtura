@@ -1,17 +1,17 @@
 <script lang="ts">
-import type { NavItem } from '$src/layout/components/interfaces';
-import Layout from '$src/layout/main.svelte';
+import type { NavItem } from '../../layout/components/interfaces';
 import { Temporal } from '@js-temporal/polyfill';
 import GrowthCard from './components/GrowthCard.svelte';
 import Card from '../../components/Card.svelte';
 import Icon from '../../components/Icon.svelte';
 import Button from '../../components/Button.svelte';
+import Main from '../../layout/main.svelte';
 
 let active = $state('beranda');
 const user = { name: 'placholder', age: 'placeholder', avatar: '' };
 </script>
 
-<Layout
+<Main
   {active}
   {user}
   title="Selamat pagi, [Placeholder]"
@@ -36,14 +36,14 @@ const user = { name: 'placholder', age: 'placeholder', avatar: '' };
 
     <div class="row bottom">
       <Card bg="var(--surface)" border="1px solid var(--teal-100)">
-        a
+        <h4> Catatan Terakhir </h4>
       </Card>
       <Card bg="var(--surface)" border="1px solid var(--teal-100)">
-        a
+        <h4> Akses Cepat </h4>
       </Card>
     </div>
   </section>
-</Layout>
+</Main>
 
 <style>
   .dashboard {
