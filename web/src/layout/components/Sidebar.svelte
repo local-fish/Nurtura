@@ -20,6 +20,7 @@
         { id: 'grafik', label: 'Grafik pertumbuhan', icon: 'chart', href: '#/grafik' }
       ]
     },
+    /*
     {
       label: 'Bantuan',
       items: [
@@ -27,6 +28,7 @@
         { id: 'bantuan', label: 'Pusat bantuan', icon: 'help', href: '#/bantuan' }
       ]
     }
+    */
   ];
 
   function handleClick(e: MouseEvent, item: NavItem) {
