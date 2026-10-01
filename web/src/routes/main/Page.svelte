@@ -28,9 +28,9 @@ const user = { name: 'placholder', age: 'placeholder', avatar: '' };
           <Icon name="calendar" size={24}/>
           <strong style="font-size: 0.9rem, text-align: center">Imunisasi Berikutnya</strong>
         </div>
-          <h1> Polio 3 </h1>
-          <div style="margin-bottom: 1rem">Lakukan sebelum [placeholder]. [placeholder]</div>
-          <Button icon="check">Tandai Sudah Vaksin</Button>
+        <h1> Polio 3 </h1>
+        <div style="margin-bottom: 1rem">Lakukan sebelum [placeholder]. [placeholder]</div>
+        <Button icon="check">Tandai Sudah Vaksin</Button>
       </Card>
     </div>
 
@@ -46,25 +46,25 @@ const user = { name: 'placholder', age: 'placeholder', avatar: '' };
 </Main>
 
 <style>
-  .dashboard {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    margin: 0 auto;
-    padding: 1rem;
-  }
-  .row {
-    display: grid;
-    gap: 24px;
-    align-items: stretch;
-  }
-  .top    { grid-template-columns: 2.2fr 1fr; }
-  .bottom { grid-template-columns: 1.8fr 1fr; }
-  .imun-heading {
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-    align-content: center;
-  }
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+.row {
+  display: grid;
+  gap: 24px;
+  align-items: stretch;
+}
+.top    { grid-template-columns: 2.2fr 1fr; }
+.bottom { grid-template-columns: 1.8fr 1fr; }
+.imun-heading {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-content: center;
+}
 
 </style>

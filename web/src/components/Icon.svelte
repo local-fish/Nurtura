@@ -1,22 +1,22 @@
 <script>
-  let { name, size = 18, stroke = 1.6 } = $props();
-  
-  const files = import.meta.glob('$src/assets/icons/*.svg', {
-    query: '?raw',
-    import: 'default',
-    eager: true
-  });
+let { name, size = 18, stroke = 1.6 } = $props();
 
-  // '/src/assets/icons/plus.svg' -> 'plus', and strip the outer <svg> wrapper
-  const icons = Object.fromEntries(
-    Object.entries(files).map(([path, raw]) => {
-      const key = path.split('/').pop()?.replace('.svg', '');
-      const inner = raw.replace(/^[\s\S]*?<svg[^>]*>/i, '').replace(/<\/svg>\s*$/i, '');
-      return [key, inner];
-    })
-  );
+const files = import.meta.glob('$src/assets/icons/*.svg', {
+  query: '?raw',
+  import: 'default',
+  eager: true
+});
 
-  const markup = $derived(icons[name]);
+// '/src/assets/icons/plus.svg' -> 'plus', and strip the outer <svg> wrapper
+const icons = Object.fromEntries(
+  Object.entries(files).map(([path, raw]) => {
+    const key = path.split('/').pop()?.replace('.svg', '');
+    const inner = raw.replace(/^[\s\S]*?<svg[^>]*>/i, '').replace(/<\/svg>\s*$/i, '');
+    return [key, inner];
+  })
+);
+
+const markup = $derived(icons[name]);
 </script>
 {#if markup}
   <svg

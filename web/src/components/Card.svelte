@@ -1,11 +1,11 @@
 <script lang="ts">
-  import type { Snippet } from 'svelte';
+import type { Snippet } from 'svelte';
 
-  let {
-    bg = '#123456',
-    border,
-    children
-  }: { bg?: string; border?: string; children?: Snippet } = $props();
+let {
+  bg = '#123456',
+  border,
+  children
+}: { bg?: string; border?: string; children?: Snippet } = $props();
 </script>
 
 <div class="card" style:--bg={bg} style:border={border}>
