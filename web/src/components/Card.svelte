@@ -10,7 +10,8 @@
 
 <div class="card" style:--bg={bg} style:border={border}>
   {@render children?.()}
-</div><style>
+</div>
+<style>
 .card {
   border-radius: 2rem;
   background-color: var(--bg);

@@ -2,7 +2,7 @@ import { API_URL } from '$src/config';
 
 const TOKEN_KEY = 'auth_token';
 
-async function post(path, body) {
+async function post(path: string, body: object) {
   const res = await fetch(`${API_URL}${path}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -16,9 +16,9 @@ async function post(path, body) {
   return data;
 }
 
-export const register = (email, password) => post('/auth/register', { email, password });
+export const register = (email: string, password: string) => post('/auth/register', { email, password });
 
-export async function login(email, password) {
+export async function login(email: string, password: string) {
   const { token, expires_in } = await post('/auth/login', { email, password });
   localStorage.setItem(TOKEN_KEY, JSON.stringify({
     token,
@@ -29,7 +29,7 @@ export async function login(email, password) {
 
 export function getToken() {
   try {
-    const saved = JSON.parse(localStorage.getItem(TOKEN_KEY));
+    const saved = JSON.parse(localStorage.getItem(TOKEN_KEY) || "token not found");
     if (saved && saved.expiresAt > Date.now()) return saved.token;
   } catch {}
   localStorage.removeItem(TOKEN_KEY);
@@ -38,8 +38,7 @@ export function getToken() {
 
 export const logout = () => localStorage.removeItem(TOKEN_KEY);
 
-// Use for protected endpoints: authFetch('/measurements')
-export async function authFetch(path, options = {}) {
+export async function authFetch(path: string, options: RequestInit = {}) {
   const token = getToken();
   const res = await fetch(`${API_URL}${path}`, {
     ...options,

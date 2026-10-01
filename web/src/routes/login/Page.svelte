@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
   import { login, register } from './auth';
 
   let { onLogin = () => {} } = $props();
 
-  let mode = $state('login'); // 'login' | 'register'
+  let mode = $state('login');  
   let email = $state('');
   let password = $state('');
   let confirm = $state('');
@@ -11,11 +11,10 @@
   let notice = $state('');
   let busy = $state(false);
 
-  // Server limits are in bytes, not characters
   const pwBytes = $derived(new TextEncoder().encode(password).length);
   const isRegister = $derived(mode === 'register');
 
-  function switchMode(next) {
+  function switchMode(next: 'login' | 'register') {
     mode = next;
     error = '';
     notice = '';
@@ -30,7 +29,7 @@
     return '';
   }
 
-  async function submit(e) {
+  async function submit(e: SubmitEvent) {
     e.preventDefault();
     error = validate();
     notice = '';
@@ -47,7 +46,7 @@
         const token = await login(email, password);
         onLogin(token);
       }
-    } catch (err) {
+    } catch (err: any) {
       error = err.message;
     } finally {
       busy = false;
