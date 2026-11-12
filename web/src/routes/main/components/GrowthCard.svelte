@@ -1,41 +1,41 @@
 <script lang="ts">
-  import type { Component } from 'svelte';
-  import Button from "../../../components/Button.svelte";
+	import type { Component } from 'svelte';
+	import Button from '../../../components/Button.svelte';
 
-let {
-  name = 'placeholder',
-  updatedAt = 'placeholder',
-  metrics = [
-    { label: 'placeholder', value: '-', unit: '', status: null },
-    { label: 'placeholder', value: '-', unit: '', status: null },
-    { label: 'placeholder', value: '-', unit: '', status: null }
-  ]
-} = $props();
+	let {
+		name = 'placeholder',
+		updatedAt = 'placeholder',
+		metrics = [
+			{ label: 'placeholder', value: '-', unit: '', status: null },
+			{ label: 'placeholder', value: '-', unit: '', status: null },
+			{ label: 'placeholder', value: '-', unit: '', status: null }
+		]
+	} = $props();
 </script>
 
 <section class="card">
-  <span class="circle" aria-hidden="true"></span>
+	<span class="circle" aria-hidden="true"></span>
 
-  <header class="head">
-    <div>
-      <h2>Pertumbuhan {name}</h2>
-      <p class="updated">Pembaruan terakhir · {updatedAt}</p>
-    </div>
-    <Button style="width: 18rem" icon="arrow-up-right">
-      <span style="font-size: 0.9rem">Lihat Grafik Lengkap</span>
-    </Button>
-  </header>
-  <div class="metrics">
-    {#each metrics as m}
-      <div class="metric">
-        <span class="label">{m.label}</span>
-        <div class="value">
-          {m.value}<span class="unit">{m.unit}</span>
-        </div>
-        {m.status}
-      </div>
-    {/each}
-  </div>
+	<header class="head">
+		<div>
+			<h2>Pertumbuhan {name}</h2>
+			<p class="updated">Pembaruan terakhir · {updatedAt}</p>
+		</div>
+		<Button style="width: 18rem" icon="arrow-up-right">
+			<span style="font-size: 0.9rem">Lihat Grafik Lengkap</span>
+		</Button>
+	</header>
+	<div class="metrics">
+		{#each metrics as m}
+			<div class="metric">
+				<span class="label">{m.label}</span>
+				<div class="value">
+					{m.value}<span class="unit">{m.unit}</span>
+				</div>
+				{m.status}
+			</div>
+		{/each}
+	</div>
 </section>
 
 <style>
@@ -105,66 +105,66 @@ h2 {
   text-decoration: none;,m,,lk
   white-space: nowrap;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
-}
-.cta:focus-visible {
-  outline: 3px solid rgba(255, 255, 255, 0.7);
-  outline-offset: 2px;
-}
-
-.metrics {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  margin-top: 26px;
-}
-
-.metric {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-  padding: 0 28px;
-}
-.metric:first-child { padding-left: 0; }
-.metric + .metric { border-left: 1px solid rgba(255, 255, 255, 0.28); }
-
-.label {
-  font-size: 13px;
-  color: var(--muted);
-}
-
-.value {
-  font-size: 34px;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  line-height: 1.15;
-}
-.unit {
-  margin-left: 6px;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: 0;
-}
-
-.badge {
-  margin-top: 4px;
-  padding: 5px 12px;
-  border-radius: 8px;
-  background: var(--badge-bg);
-  color: var(--badge-text);
-  font-size: 12px;
-  font-weight: 700;
-}
-
-@media (max-width: 640px) {
-  .card { padding: 22px 20px; border-radius: 26px; }
-  .head { flex-direction: column; }
-  .metrics { grid-template-columns: 1fr; gap: 18px; }
-  .metric { padding: 0; }
-  .metric + .metric {
-    border-left: 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.28);
-    padding-top: 18px;
   }
-}
+  .cta:focus-visible {
+    outline: 3px solid rgba(255, 255, 255, 0.7);
+    outline-offset: 2px;
+  }
+
+  .metrics {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 26px;
+  }
+
+  .metric {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 0 28px;
+  }
+  .metric:first-child { padding-left: 0; }
+  .metric + .metric { border-left: 1px solid rgba(255, 255, 255, 0.28); }
+
+  .label {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .value {
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    line-height: 1.15;
+  }
+  .unit {
+    margin-left: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .badge {
+    margin-top: 4px;
+    padding: 5px 12px;
+    border-radius: 8px;
+    background: var(--badge-bg);
+    color: var(--badge-text);
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  @media (max-width: 640px) {
+    .card { padding: 22px 20px; border-radius: 26px; }
+    .head { flex-direction: column; }
+    .metrics { grid-template-columns: 1fr; gap: 18px; }
+    .metric { padding: 0; }
+    .metric + .metric {
+      border-left: 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.28);
+      padding-top: 18px;
+    }
+  }
 </style>
