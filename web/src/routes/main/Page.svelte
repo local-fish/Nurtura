@@ -28,7 +28,7 @@ const user = { name: 'placholder', age: 'placeholder', avatar: '' };
           <Icon name="calendar" size={24}/>
           <strong style="font-size: 0.9rem, text-align: center">Imunisasi Berikutnya</strong>
         </div>
-        <h1> Polio 3 </h1>
+        <h1>[placeholder]</h1>
         <div style="margin-bottom: 1rem">Lakukan sebelum [placeholder]. [placeholder]</div>
         <Button icon="check">Tandai Sudah Vaksin</Button>
       </Card>

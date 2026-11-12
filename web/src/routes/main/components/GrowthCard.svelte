@@ -1,13 +1,14 @@
-<script>
-import Button from "../../../components/Button.svelte";
+<script lang="ts">
+  import type { Component } from 'svelte';
+  import Button from "../../../components/Button.svelte";
 
 let {
-  name = 'Aura',
-  updatedAt = '17 September 2026',
+  name = 'placeholder',
+  updatedAt = 'placeholder',
   metrics = [
-    { label: 'Berat badan', value: '8.5', unit: 'kg', status: 'Normal · WHO' },
-    { label: 'Tinggi badan', value: '71.0', unit: 'cm', status: 'Normal · WHO' },
-    { label: 'Lingkar kepala', value: '44.5', unit: 'cm', status: 'Normal · WHO' }
+    { label: 'placeholder', value: '-', unit: '', status: null },
+    { label: 'placeholder', value: '-', unit: '', status: null },
+    { label: 'placeholder', value: '-', unit: '', status: null }
   ]
 } = $props();
 </script>
@@ -31,7 +32,7 @@ let {
         <div class="value">
           {m.value}<span class="unit">{m.unit}</span>
         </div>
-        <span class="badge">{m.status}</span>
+        {m.status}
       </div>
     {/each}
   </div>
@@ -101,7 +102,7 @@ h2 {
   color: var(--cta-text);
   font-size: 13px;
   font-weight: 700;
-  text-decoration: none;
+  text-decoration: none;,m,,lk
   white-space: nowrap;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
