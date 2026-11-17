@@ -2,16 +2,39 @@
 	import Sidebar from './components/Sidebar.svelte';
 	import Topbar from './components/Topbar.svelte';
 
-	let { active = 'beranda', title = '', subtitle = '', user, onnavigate, children } = $props();
+	let {
+		active = 'beranda',
+		title = '',
+		subtitle = '',
+		user,
+		lastUpdated,
+		patients = [],
+		activeId = '',
+		onnavigate,
+		onselectchild,
+		onaddchild,
+		onlogout,
+		children
+	} = $props();
 
 	let menuOpen = $state(false);
 </script>
 
 <div class="shell">
-	<Sidebar {active} open={menuOpen} {onnavigate} onclose={() => (menuOpen = false)} />
+	<Sidebar {active} open={menuOpen} {lastUpdated} {onnavigate} onclose={() => (menuOpen = false)} />
 
 	<div class="main">
-		<Topbar {title} {subtitle} {user} onmenu={() => (menuOpen = true)} />
+		<Topbar
+			{title}
+			{subtitle}
+			{user}
+			{patients}
+			{activeId}
+			{onselectchild}
+			{onaddchild}
+			{onlogout}
+			onmenu={() => (menuOpen = true)}
+		/>
 		<main class="content">
 			{@render children?.()}
 		</main>

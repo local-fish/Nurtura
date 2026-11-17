@@ -23,8 +23,10 @@ func main() {
 		port = "8080"
 	}
 	srv := &http.Server{
-		Addr:              ":" + port,
-		Handler:           h,
+		Addr: ":" + port,
+		// Same CORS policy as the Vercel handler, so the Vite dev server can
+		// talk to this directly instead of going through `vercel dev`.
+		Handler:           app.WithCORS(h),
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 	log.Printf("listening on :%s", port)

@@ -7,7 +7,13 @@
 		open = false,
 		onnavigate = () => {},
 		onclose = () => {},
-		lastUpdated = 'this should call an API'
+		lastUpdated = 'belum ada aktivitas'
+	}: {
+		active?: string;
+		open?: boolean;
+		onnavigate?: (item: NavItem, e: MouseEvent) => void;
+		onclose?: () => void;
+		lastUpdated?: string;
 	} = $props();
 
 	const sections: Section[] = [
@@ -44,7 +50,7 @@
 			<div class="brand-name">Nurtura</div>
 			<div class="brand-tag">Tumbuh bersama</div>
 		</div>
-		<button class="close" onclick={() => onclose} aria-label="Tutup menu">
+		<button class="close" onclick={onclose} aria-label="Tutup menu">
 			<Icon name="close" />
 		</button>
 	</div>
@@ -78,7 +84,7 @@
 </aside>
 
 {#if open}
-	<button class="scrim" onclick={() => onclose} aria-label="Tutup menu"></button>
+	<button class="scrim" onclick={onclose} aria-label="Tutup menu"></button>
 {/if}
 
 <style>
@@ -87,7 +93,7 @@
 		flex-shrink: 0;
 		display: flex;
 		flex-direction: column;
-		gap: 20px;
+		gap: 24px;
 		padding: 24px 16px;
 		background: var(--surface);
 		border-right: 1px solid var(--line);
@@ -127,16 +133,21 @@
 
 	.section-label {
 		margin: 0 0 8px;
-		padding: 0 6px;
+		padding: 0 14px;
 		font-size: 11px;
 		color: var(--ink-soft);
+	}
+	/* Without this the flex column squeezes nav below its content height and the
+	   last link overlaps the status card instead of letting the sidebar scroll. */
+	nav {
+		flex-shrink: 0;
 	}
 	nav ul {
 		list-style: none;
 		margin: 0 0 18px;
 		padding: 0;
 		display: grid;
-		gap: 4px;
+		gap: 6px;
 	}
 
 	a {
@@ -144,7 +155,9 @@
 		display: flex;
 		align-items: center;
 		gap: 12px;
-		padding: 10px 12px;
+		/* Extra right padding clears the .active::after indicator (3px bar at
+		   right: 10px) so long labels don't butt up against it. */
+		padding: 13px 24px 13px 14px;
 		border-radius: 10px;
 		color: var(--ink-soft);
 		font-size: 14px;
@@ -178,6 +191,7 @@
 
 	.status {
 		margin-top: auto;
+		flex-shrink: 0;
 		display: grid;
 		gap: 4px;
 		padding: 14px;

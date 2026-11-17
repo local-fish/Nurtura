@@ -7,22 +7,26 @@
 		eager: true
 	});
 
-	// '/src/assets/icons/plus.svg' -> 'plus', and strip the outer <svg> wrapper
+	// '/src/assets/icons/plus.svg' -> 'plus', and strip the outer <svg> wrapper.
+	// The source viewBox is kept, otherwise the paths render at raw user units
+	// inside a {size}px box and get clipped.
 	const icons = Object.fromEntries(
 		Object.entries(files).map(([path, raw]) => {
 			const key = path.split('/').pop()?.replace('.svg', '');
+			const viewBox = raw.match(/viewBox="([^"]+)"/i)?.[1] ?? '0 0 24 24';
 			const inner = raw.replace(/^[\s\S]*?<svg[^>]*>/i, '').replace(/<\/svg>\s*$/i, '');
-			return [key, inner];
+			return [key, { inner, viewBox }];
 		})
 	);
 
-	const markup = $derived(icons[name]);
+	const icon = $derived(icons[name]);
 </script>
 
-{#if markup}
+{#if icon}
 	<svg
 		width={size}
 		height={size}
+		viewBox={icon.viewBox}
 		fill="none"
 		stroke="currentColor"
 		stroke-width={stroke}
@@ -31,7 +35,7 @@
 		aria-hidden="true"
 		style="display: block"
 	>
-		{@html markup}
+		{@html icon.inner}
 	</svg>
 {:else if import.meta.env.DEV}
 	{console.warn(`Icon "${name}" not found in assets/icons`)}

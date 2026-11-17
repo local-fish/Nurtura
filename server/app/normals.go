@@ -61,8 +61,14 @@ func (a *App) normals(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	age := ageMonths(p.DateOfBirth, time.Now())
 
-	mrows, err := a.db.Query(ctx,
-		`SELECT DISTINCT metric FROM growth_reference WHERE sex = $1 ORDER BY metric`, p.Sex)
+	// Metrics that have a reference curve for this sex, plus anything this patient
+	// has actually recorded. The latter covers metrics with no reference data yet
+	// (head_circumference), which are reported with a null reference and empty band.
+	mrows, err := a.db.Query(ctx, `
+		SELECT metric FROM growth_reference WHERE sex = $1
+		UNION
+		SELECT metric FROM records WHERE patient_id = $2
+		ORDER BY metric`, p.Sex, p.Id)
 	if err != nil {
 		serverErr(w, r, err)
 		return

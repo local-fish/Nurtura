@@ -1,13 +1,9 @@
 package handler
 
 import (
+	"log"
 	"net/http"
 	"sync"
-	"log"
-	"strings"
-	"os"
-	
-	"github.com/rs/cors"
 
 	"github.com/local-fish/Nurtura/server/app"
 )
@@ -24,19 +20,9 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		router, err = app.New()
 		if err != nil {
 			log.Printf("app init: %v", err)
+			return
 		}
-
-		origins := []string{"http://localhost:5173"}
-		if extra := os.Getenv("CORS_ORIGINS"); extra != "" {
-			origins = append(origins, strings.Split(extra, ",")...)
-		}
-
-		h = cors.New(cors.Options{
-			AllowedOrigins:   origins,
-			AllowedMethods:   []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
-			AllowedHeaders:   []string{"Content-Type", "Authorization"},
-			AllowCredentials: true, // only if you use cookies
-		}).Handler(router)
+		h = app.WithCORS(router)
 	})
 	if err != nil {
 		http.Error(w, "internal error", 500)

@@ -82,19 +82,12 @@ func (a *App) addRecord(w http.ResponseWriter, r *http.Request) {
 		writeErr(w, http.StatusBadRequest, "measured_at cannot be in the future")
 		return
 	}
-	limit, offset, msg := pagination(r)
-	if msg != "" {
-		writeErr(w, http.StatusBadRequest, msg)
-		return
-	}
 	rec, err := scanRecord(a.db.QueryRow(r.Context(), `
 		INSERT INTO records AS r (patient_id, metric, value, measured_at)
 		SELECT p.id, $2, $3::numeric, COALESCE($4::timestamptz, now())
 		FROM patients p WHERE p.id = $1 AND p.user_id = $5
-		ORDER BY l.created_at DESC, l.id
-		LIMIT $3 OFFSET $4
 		RETURNING `+recordCols,
-		pid, in.Metric, *in.Value, in.MeasuredAt, userId(r), limit, offset))
+		pid, in.Metric, *in.Value, in.MeasuredAt, userId(r)))
 	if errors.Is(err, pgx.ErrNoRows) {
 		writeErr(w, http.StatusNotFound, "patient not found")
 		return

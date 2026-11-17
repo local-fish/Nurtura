@@ -10,7 +10,6 @@ async function post(path: string, body: object) {
 	});
 	const data = await res.json().catch(() => ({}));
 	if (!res.ok) {
-		// writeErr() message; adjust the field name if yours differs
 		throw new Error(data.error ?? data.message ?? `Request failed (${res.status})`);
 	}
 	return data;
