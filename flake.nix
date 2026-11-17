@@ -42,6 +42,8 @@
 
           typescript-language-server
           svelte-language-server
+
+          claude-code
         ];
         shellHook = "./nix-hook.fish ${name}";
       };
