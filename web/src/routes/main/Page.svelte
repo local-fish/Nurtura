@@ -8,6 +8,7 @@
 	import Main from '../../layout/main.svelte';
 	import Onboarding from '../onboarding/Page.svelte';
 	import InputData from '../input/Page.svelte';
+	import Grafik from '../grafik/Page.svelte';
 	import QuickActions from './components/QuickActions.svelte';
 	import {
 		listPatients,
@@ -212,6 +213,18 @@
 				onsaved={() => loadDashboard(activeId)}
 				onselectchild={(id: string) => loadDashboard(id)}
 			/>
+		{:else if active === 'grafik'}
+			<Grafik
+				{patient}
+				{normals}
+				nextCheckup={nextVaccine
+					? {
+							label: `${nextVaccine.name} (dosis ${nextVaccine.dose_number})`,
+							date: vaccineDueDate ? dateFmt.format(new Date(vaccineDueDate.toString())) : '-'
+						}
+					: null}
+				onremind={() => (active = 'paspor')}
+			/>
 		{:else if active !== 'beranda'}
 			<section class="dashboard">
 				<Card bg="var(--surface)" border="1px solid var(--teal-100)">
@@ -222,7 +235,12 @@
 		{:else}
 			<section class="dashboard">
 				<div class="row top">
-					<GrowthCard name={patient.name} updatedAt={growthUpdatedAt} metrics={growthMetrics} />
+					<GrowthCard
+						name={patient.name}
+						updatedAt={growthUpdatedAt}
+						metrics={growthMetrics}
+						onopen={() => (active = 'grafik')}
+					/>
 
 					<Card bg="#E3AD53">
 						<div class="imun-heading">

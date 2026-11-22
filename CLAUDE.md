@@ -19,7 +19,20 @@ nix develop            # enter the dev shell (sets up + starts local Postgres)
 psql                   # connects to the local instance via PGHOST/PGUSER/PGDATABASE env vars set by nix-hook.fish
 ```
 
-Load the schema into a fresh local DB with `psql -f server/queries/schema.sql` (and optionally the seed files in `server/queries/seeds/`).
+Load the schema into a fresh local DB with `psql -f server/queries/schema.sql`, then the seeds in this order (`metrics.sql` must come first — the other two reference `metrics.code`):
+
+```bash
+psql -f server/queries/seeds/metrics.sql            # metric codes, units, valid ranges
+psql -f server/queries/seeds/growth_reference.sql   # WHO percentile curves, 0-60 months
+psql -f server/queries/seeds/reference.sql          # immunisation schedule
+psql -f server/queries/seeds/demo-data.sql          # optional: demo account + sample children
+```
+
+`growth_reference.sql` is generated from the published WHO Child Growth Standards month tables (P3/P50/P97 for weight-for-age, length/height-for-age, and head-circumference-for-age, both sexes, months 0–60 — 366 rows). It upserts, so re-running it corrects stale rows rather than skipping them. Its header documents the exact source files and the length→height convention at 24 months. **Don't hand-edit those numbers or regenerate them from memory** — they drive the "normal / di bawah normal" verdict shown to parents. Re-derive from the WHO tables if they ever need to change.
+
+The vaccine schedule in `reference.sql` is still placeholder data and is flagged as such in the file.
+
+`demo-data.sql` is **local dev only** — it creates `demo@nurtura.app` / `demo12345678`, whose password is published in the file, so never load it anywhere reachable by others. It seeds two children (Aura, 8 months; Bima, 30 months) with growth records, notes and immunisation history covering every feature built so far. Ages are relative to `CURRENT_DATE`, so the demo stays fresh however long from now it runs, and the growth records are stored as a multiple of the WHO median rather than raw numbers, so every point lands inside the normal band regardless of the reference data. It deletes the demo account before re-inserting, so it is safe to re-run and touches nothing else.
 
 ## Server (`server/`, Go)
 
@@ -39,6 +52,14 @@ Required env vars: `DATABASE_URL`, `JWT_SECRET` (must be ≥32 chars). Optional:
 Both wrap the handler with `app.WithCORS` (`app/cors.go`, `rs/cors`), which allows `http://localhost:5173` plus any comma-separated `CORS_ORIGINS`.
 
 **Don't use `vercel dev` as the local API.** It spawns a separate Go process per build and routes concurrent requests to processes that may not be listening yet, so parallel requests return sporadic **502**s (the dashboard fires four at once via `Promise.all` and reliably trips this). The same load against `go run ./cmd/server` is clean. Point `web/.env` at `http://localhost:8080` and use `cmd/server`; reserve `vercel dev` for checking the serverless path itself.
+
+**`vercel dev` also collides with the Nix Go toolchain.** Inside `nix develop`, `go` on `PATH` is the flake's Go, but the Vercel CLI downloads its own Go into `server/.vercel/cache/golang` (a symlink into `~/.cache/com.vercel.cli/golang/<ver>_linux_x64`) and exports that as `GOROOT`. When the two versions differ, the mismatched tool-vs-GOROOT pair makes the whole standard library fail to resolve, and `go build -o ./vercel-dev-server-go ./...` dies with a wall of `package sync is not in std` / `compile: version "goX" does not match go tool version "goY"` plus repeated `Downloading go: …` retries. It is a local toolchain collision only — it says nothing about whether the deployed build works. If you must run it, put the CLI's own Go first so the versions match:
+
+```bash
+PATH="$HOME/.cache/com.vercel.cli/golang/$(ls ~/.cache/com.vercel.cli/golang | tail -1)/bin:$PATH" vercel dev
+```
+
+Clearing `server/.vercel/cache/` resets the downloaded toolchain, but do it only when no `vercel dev` is running — deleting it mid-run produces a misleading `go: cannot find GOROOT directory` on top of the real error.
 
 Both call `app.New()` in `app/app.go`, which builds the pgx pool and route table. Routes are plain Go 1.22+ `http.ServeMux` patterns (`"POST /patients/{id}/records"`), wrapped with `a.requireAuth` for anything needing a logged-in user.
 

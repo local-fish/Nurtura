@@ -5,6 +5,7 @@
 	let {
 		name = 'placeholder',
 		updatedAt = 'placeholder',
+		onopen = () => {},
 		metrics = [
 			{ label: 'placeholder', value: '-', unit: '', status: null },
 			{ label: 'placeholder', value: '-', unit: '', status: null },
@@ -21,7 +22,7 @@
 			<h2>Pertumbuhan {name}</h2>
 			<p class="updated">Pembaruan terakhir · {updatedAt}</p>
 		</div>
-		<Button style="width: 18rem" icon="arrow-up-right">
+		<Button style="width: 18rem" icon="arrow-up-right" onclick={onopen}>
 			<span style="font-size: 0.9rem">Lihat Grafik Lengkap</span>
 		</Button>
 	</header>
@@ -102,7 +103,7 @@ h2 {
   color: var(--cta-text);
   font-size: 13px;
   font-weight: 700;
-  text-decoration: none;,m,,lk
+  text-decoration: none;
   white-space: nowrap;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
   }

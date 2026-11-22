@@ -72,6 +72,7 @@ func (a *App) routes() http.Handler {
 	mux.Handle("GET /patients/{id}/records", auth(a.listRecords))
 	mux.Handle("GET /records/{id}", auth(a.getRecord))
 	mux.Handle("GET /patients/{id}/normals", auth(a.normals))
+	mux.Handle("GET /patients/{id}/growth", auth(a.growth))
 	mux.Handle("POST /patients/{id}/logs", auth(a.addLog))
 	mux.Handle("GET /patients/{id}/logs", auth(a.listLogs))
 	mux.Handle("POST /patients/{id}/vaccines/{vaccine_id}/complete", auth(a.completeVaccine))

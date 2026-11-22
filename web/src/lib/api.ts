@@ -75,6 +75,38 @@ export interface Normals {
 export const getNormals = (patientId: string) =>
 	authFetch(`/patients/${patientId}/normals`).then((r) => json<Normals>(r));
 
+/** One age step of a percentile curve. */
+export interface RefPoint {
+	age_months: number;
+	p3: number;
+	p50: number;
+	p97: number;
+}
+
+/** A single measurement, carrying the age it was taken at for charting. */
+export interface GrowthPoint {
+	id: string;
+	value: number;
+	measured_at: string;
+	age_months: number;
+}
+
+export interface Growth {
+	patient_id: string;
+	sex: 'M' | 'F';
+	age_months: number;
+	metric: string;
+	unit: string;
+	reference: RefPoint[];
+	records: GrowthPoint[];
+}
+
+/** Full reference curve plus the child's own measurements, for one metric. */
+export const getGrowth = (patientId: string, metric: string) =>
+	authFetch(`/patients/${patientId}/growth?metric=${encodeURIComponent(metric)}`).then((r) =>
+		json<Growth>(r)
+	);
+
 export interface VaccineStatus {
 	vaccine_id: number;
 	name: string;

@@ -7,6 +7,12 @@
 .go/
 vendor/
 
+# Compiled server binaries. Vercel's Go builder looks for the output binary in
+# the project root, so a stray one here can get picked up as the build output.
+/server/main
+/server/server
+/server/vercel-dev-server-go
+
 # Nix
 .direnv/
 result
