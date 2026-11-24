@@ -190,7 +190,7 @@
 		}}
 		{patients}
 		{activeId}
-		title={`Selamat ${greeting()}, ${patient.name}`}
+		title={`Selamat ${greeting()}`}
 		subtitle={Temporal.Now.zonedDateTimeISO(Temporal.Now.timeZoneId()).toLocaleString('id-ID', {
 			day: 'numeric',
 			month: 'long',
